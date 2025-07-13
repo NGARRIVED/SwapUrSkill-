@@ -1,2 +1,29 @@
-# SwapUrSkill-
-🔁SwapUrSkill – A Peer-to-Peer Skill Exchange Platform SkillSwap is a minimal web application that enables individuals to exchange knowledge by offering and requesting skills within a community. Users can create profiles, list their skills, browse others by interest, and initiate swap requests to learn something new or share what they know.
+# SwapUrSkill
+
+A Skill Swap Platform with clear separation of frontend, backend, and integrator (shared scripts, docs, etc.).
+
+## Structure
+
+```
+SwapUrSkill-/
+│
+├── frontend/           # All frontend (React, Next.js, etc.) code
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   └── ... (other frontend configs)
+│
+├── backend/            # All backend (Node.js, Express, etc.) code
+│   ├── src/
+│   ├── package.json
+│   └── ... (other backend configs)
+│
+├── integrator/         # Shared scripts, environment, CI/CD, docs
+│   ├── scripts/
+│   ├── docs/
+│   └── shared/         # (optional) shared types/interfaces
+│
+├── .gitignore
+├── README.md
+└── package.json        # (optional) for monorepo tooling (e.g., with workspaces)
+```

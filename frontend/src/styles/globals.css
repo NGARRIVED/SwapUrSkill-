@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Luxury Old Money Theme Customizations */
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+  }
+  
+  body {
+    background-color: #F5F5DC;
+    color: #222222;
+    line-height: 1.6;
+  }
+}
+
+@layer components {
+  /* Luxury Button Styles */
+  .btn-primary {
+    @apply bg-luxury-dark-green text-white px-6 py-3 rounded-md font-medium transition-all duration-300 hover:bg-luxury-navy hover:shadow-luxury focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:ring-opacity-50;
+  }
+  
+  .btn-secondary {
+    @apply bg-luxury-gold text-luxury-charcoal px-6 py-3 rounded-md font-medium transition-all duration-300 hover:bg-luxury-brown hover:text-white focus:outline-none focus:ring-2 focus:ring-luxury-dark-green focus:ring-opacity-50;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-luxury-dark-green text-luxury-dark-green px-6 py-3 rounded-md font-medium transition-all duration-300 hover:bg-luxury-dark-green hover:text-white focus:outline-none focus:ring-2 focus:ring-luxury-gold focus:ring-opacity-50;
+  }
+  
+  /* Luxury Card Styles */
+  .card-luxury {
+    @apply bg-white rounded-lg shadow-luxury border border-luxury-cream p-6 transition-all duration-300 hover:shadow-lg;
+  }
+  
+  .card-luxury-gold {
+    @apply bg-gradient-to-br from-luxury-gold to-luxury-brown text-white rounded-lg shadow-gold p-6;
+  }
+  
+  /* Luxury Input Styles */
+  .input-luxury {
+    @apply w-full px-4 py-3 border border-luxury-sage rounded-md focus:outline-none focus:ring-2 focus:ring-luxury-dark-green focus:border-transparent transition-all duration-300 bg-white;
+  }
+  
+  /* Luxury Typography */
+  .text-display {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-luxury-dark-green;
+  }
+  
+  .text-heading {
+    @apply font-display text-2xl md:text-3xl font-semibold text-luxury-dark-green;
+  }
+  
+  .text-subheading {
+    @apply font-display text-xl md:text-2xl font-medium text-luxury-navy;
+  }
+  
+  .text-body {
+    @apply font-body text-base text-luxury-charcoal leading-relaxed;
+  }
+  
+  .text-caption {
+    @apply font-body text-sm text-luxury-brown;
+  }
+}
+
+@layer utilities {
+  /* Luxury Gradients */
+  .bg-luxury-gradient {
+    background: linear-gradient(135deg, #014421 0%, #1B365D 100%);
+  }
+  
+  .bg-gold-gradient {
+    background: linear-gradient(135deg, #BFA76A 0%, #8B5C2A 100%);
+  }
+  
+  /* Luxury Animations */
+  .animate-luxury-fade-in {
+    animation: luxuryFadeIn 0.8s ease-out;
+  }
+  
+  .animate-luxury-slide-up {
+    animation: luxurySlideUp 0.6s ease-out;
+  }
+}
+
+/* Custom Animations */
+@keyframes luxuryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes luxurySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+} 

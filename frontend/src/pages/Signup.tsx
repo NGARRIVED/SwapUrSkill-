@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Button, Card, CardHeader, CardBody, CardFooter, Input, Avatar } from '../components';
 
 const SignupContainer = styled.div`
@@ -577,9 +578,9 @@ const Signup: React.FC = () => {
           <CardFooter>
             <p style={{ textAlign: 'center', margin: 0, color: '#666' }}>
               Already have an account?{' '}
-              <a href="/login" style={{ color: '#8B4513', textDecoration: 'none' }}>
+              <Link to="/login" style={{ color: '#8B4513', textDecoration: 'none' }}>
                 Sign in here
-              </a>
+              </Link>
             </p>
           </CardFooter>
         </SignupCard>

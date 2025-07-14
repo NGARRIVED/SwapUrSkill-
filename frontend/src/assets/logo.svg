@@ -1,1 +1,29 @@
- 
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle for handshake -->
+  <circle cx="30" cy="30" r="25" fill="none" stroke="#BFA76A" stroke-width="2" opacity="0.3"/>
+  
+  <!-- Stylized handshake -->
+  <g transform="translate(30, 30)">
+    <!-- Left hand -->
+    <path d="M-8,-5 C-12,-8 -15,-5 -12,-2 C-10,0 -8,2 -6,1 C-4,0 -2,-2 0,-3 C2,-4 4,-3 6,-2 C8,-1 10,0 8,2 C6,4 4,6 2,5 C0,4 -2,2 -4,1 C-6,0 -8,-2 -8,-5 Z" 
+          fill="#014421" opacity="0.8"/>
+    
+    <!-- Right hand -->
+    <path d="M8,-5 C12,-8 15,-5 12,-2 C10,0 8,2 6,1 C4,0 2,-2 0,-3 C-2,-4 -4,-3 -6,-2 C-8,-1 -10,0 -8,2 C-6,4 -4,6 -2,5 C0,4 2,2 4,1 C6,0 8,-2 8,-5 Z" 
+          fill="#BFA76A"/>
+    
+    <!-- Connection line -->
+    <line x1="-2" y1="0" x2="2" y2="0" stroke="#8B5C2A" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Text: SkillCoterie -->
+  <text x="70" y="25" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="#014421">
+    Skill
+  </text>
+  <text x="70" y="42" font-family="Playfair Display, serif" font-size="18" font-weight="600" fill="#BFA76A">
+    Coterie
+  </text>
+  
+  <!-- Decorative line -->
+  <line x1="65" y1="50" x2="160" y2="50" stroke="#BFA76A" stroke-width="1" opacity="0.6"/>
+</svg> 

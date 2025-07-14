@@ -189,7 +189,7 @@ class Rating(Base):
     rated_user = relationship("User", foreign_keys=[rated_user_id], back_populates="ratings_received")
     
     __table_args__ = (
-        CheckConstraint(rating >= 1, rating <= 5, name='valid_rating_range'),
+        CheckConstraint('rating >= 1 AND rating <= 5', name='valid_rating_range'),
     )
 
 class Notification(Base):

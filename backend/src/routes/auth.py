@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 from ..database.database import get_db
+from ..database.models import User
 from ..models.auth import (
     UserSignup, UserLogin, OAuthLogin, OTPVerification, 
     AuthResponse, UserResponse, OTPResponse
@@ -11,7 +12,6 @@ from ..models.auth import (
 from ..services.auth_service import AuthService
 from ..services.email_service import EmailService
 from ..services.sms_service import SMSService
-from ..models.user import User
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 security = HTTPBearer()

@@ -6,7 +6,7 @@ import os
 # Database configuration
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://postgres:Yash@12345@localhost:5432/skillcoterie"
+    "postgresql://postgres:Yash%4012345@localhost:5432/skillcoterie"
 )
 
 # Create SQLAlchemy engine

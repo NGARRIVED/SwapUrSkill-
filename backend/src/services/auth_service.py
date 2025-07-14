@@ -280,7 +280,7 @@ class AuthService:
                 "requires_otp": False
             }
 
-    def get_oauth_user_info(self, provider: str, access_token: str) -> Dict[str, Any]:
+    async def get_oauth_user_info(self, provider: str, access_token: str) -> Dict[str, Any]:
         """Get user information from OAuth provider."""
         if provider == "google":
             url = "https://www.googleapis.com/oauth2/v2/userinfo"

@@ -7,9 +7,9 @@ import Header from '../components/Header';
 // Use Vite's import.meta.url to get the logo path
 const logo = new URL('/src/assets/logo.svg', import.meta.url).href; // <-- Replace with your real logo path
 
-const COMPANY_NAME = 'LuxSkill Exchange'; // <-- Replace with your real company name
-const TAGLINE = 'Elevate Your Expertise. Connect. Exchange. Grow.'; // <-- Replace with your real tagline
-const COMPANY_DESC = 'LuxSkill Exchange is the premier platform for exclusive, high-end skill exchange among professionals. Join a curated network where expertise meets opportunity, and every connection is a step toward excellence.'; // <-- Replace with your real description
+const COMPANY_NAME = 'SkillCoterie'; // <-- Updated company name
+const TAGLINE = 'Elevate Your Expertise. Connect. Exchange. Grow.'; // (unchanged)
+const COMPANY_DESC = 'SkillCoterie is the premier platform for exclusive, high-end skill exchange among professionals. Join a curated network where expertise meets opportunity, and every connection is a step toward excellence.'; // <-- Updated description
 
 type OverviewCard = {
   title: string;
@@ -22,21 +22,25 @@ const overviewCards = [
     title: 'What is SwapUrSkill?',
     content: 'A luxury platform for exclusive skill exchange among professionals. Connect, collaborate, and grow your expertise in a trusted, high-end community.',
     icon: FaHandshake,
+    slug: 'what-is-swapurskill',
   },
   {
     title: 'How does it work?',
     content: 'List your skills, browse others, and exchange services with verified members. Enjoy seamless communication, secure transactions, and premium support.',
     icon: FaFeatherAlt,
+    slug: 'how-does-it-work',
   },
   {
     title: 'Why choose us?',
     content: 'Curated membership, privacy, and a touch of old money elegance. Experience a platform where quality, trust, and luxury meet.',
     icon: FaCrown,
+    slug: 'why-choose-us',
   },
   {
     title: 'Key Features',
     content: 'Exclusive access, luxury design, verified users, in-app messaging, and more. Join a network where your skills are truly valued.',
     icon: FaCrown,
+    slug: 'key-features',
   },
 ];
 
@@ -132,12 +136,6 @@ export default function LandingPage() {
           {/* Gold shimmer overlay on logo */}
           <div className="relative mb-4 flex items-center justify-center">
             <img src={logo} alt="Logo" className="w-36 h-14 drop-shadow-lg" />
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={shimmer}
-              animate={{ backgroundPosition: ['200% 0', '-200% 0'] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
-            />
           </div>
           <h1 className="text-5xl md:text-6xl font-display font-bold text-luxury-dark-green mb-2 tracking-tight drop-shadow-lg relative">
             <span className="relative z-10">{COMPANY_NAME}</span>
@@ -145,7 +143,7 @@ export default function LandingPage() {
           </h1>
           {/* Animated tagline */}
           <motion.p
-            className="text-xl md:text-2xl text-luxury-gold font-medium mb-6 italic"
+            className="text-xl md:text-2xl font-medium mb-6 italic bg-gradient-to-r from-luxury-dark-green via-luxury-blue to-luxury-dark-green bg-clip-text text-transparent"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 1 }}
@@ -162,7 +160,7 @@ export default function LandingPage() {
             </button>
             <button
               onClick={() => navigate('/signup')}
-              className="btn-secondary flex items-center gap-2 text-lg shadow-lg relative overflow-hidden"
+              className="btn-secondary flex items-center gap-2 text-lg shadow-lg relative overflow-hidden text-luxury-charcoal"
             >
               {React.createElement(FaFeatherAlt, { className: "text-luxury-dark-green" })} Sign Up
               <span className="absolute left-0 top-0 w-full h-full bg-gradient-to-r from-luxury-gold/20 via-luxury-gold/40 to-transparent opacity-0 hover:opacity-60 transition-opacity duration-500 pointer-events-none" />
@@ -200,8 +198,9 @@ export default function LandingPage() {
                 key={card.title}
                 variants={cardVariant}
                 whileHover={{ scale: 1.06, boxShadow: '0 12px 36px 0 rgba(191,167,106,0.30)' }}
-                className="w-full max-w-2xl bg-white/40 backdrop-blur-2xl rounded-3xl shadow-gold border-2 border-luxury-gold/80 p-12 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:border-luxury-gold group relative"
+                className="w-full max-w-2xl bg-white/40 backdrop-blur-2xl rounded-3xl shadow-gold border-2 border-luxury-gold/80 p-12 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:border-luxury-gold group relative cursor-pointer"
                 style={{ boxShadow: '0 8px 32px 0 rgba(191,167,106,0.18), 0 2px 8px 0 rgba(1,68,33,0.10)' }}
+                onClick={() => navigate(`/topic/${card.slug}`)}
               >
                 <div className="flex flex-col items-center mb-4">
                   {React.createElement(card.icon, { className: "text-luxury-gold text-5xl mb-3 drop-shadow-lg" })}
@@ -215,6 +214,37 @@ export default function LandingPage() {
             );
           })}
         </motion.section>
+      </section>
+
+      {/* Call to Action Section */}
+      <section className="relative flex flex-col items-center justify-center py-16 z-10 w-full">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 1 }}
+          className="bg-white/60 backdrop-blur-2xl rounded-3xl shadow-gold border border-luxury-gold/40 px-10 py-12 flex flex-col items-center max-w-2xl mx-auto relative overflow-hidden"
+        >
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-luxury-dark-green mb-4 tracking-tight text-center drop-shadow-lg">
+            Ready to Elevate Your Network?
+          </h2>
+          <p className="text-xl md:text-2xl text-luxury-charcoal mb-8 text-center font-body font-medium">
+            Join SkillCoterie and unlock exclusive access to a world of high-end skill exchange, curated connections, and luxury experiences.
+          </p>
+          <button
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-luxury-dark-green via-luxury-blue to-luxury-gold text-white font-display text-xl font-semibold shadow-lg hover:scale-105 transition-transform duration-300 border-2 border-luxury-gold"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
+            Join the Coterie
+          </button>
+          {/* Subtle animated glow */}
+          <motion.div
+            className="absolute -inset-2 rounded-3xl pointer-events-none"
+            style={{ background: 'radial-gradient(circle at 60% 40%, #e6f5ea55 40%, #bfa76a22 100%)' }}
+            animate={{ opacity: [0.7, 1, 0.7] }}
+            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </motion.div>
       </section>
 
       {/* Contact Section */}

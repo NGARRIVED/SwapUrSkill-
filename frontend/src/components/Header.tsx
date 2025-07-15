@@ -26,7 +26,7 @@ export default function Header() {
       {/* Logo */}
       <div className="flex items-center gap-3 cursor-pointer select-none" onClick={() => navigate('/') }>
         <img src={logo} alt="Logo" className="w-14 h-10 md:w-20 md:h-14 object-contain drop-shadow-lg" />
-        <span className="font-display text-2xl md:text-3xl font-bold text-luxury-dark-green tracking-tight">LuxSkill</span>
+        <span className="font-display text-2xl md:text-3xl font-bold text-luxury-dark-green tracking-tight">SkillCoterie</span>
       </div>
       {/* Navigation */}
       <nav className="hidden md:flex gap-8 items-center">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, Variants } from 'framer-motion';
 import { FaCrown, FaHandshake, FaFeatherAlt, FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';
 import { IconType } from 'react-icons';
+import Header from '../components/Header';
 // Use Vite's import.meta.url to get the logo path
 const logo = new URL('/src/assets/logo.svg', import.meta.url).href; // <-- Replace with your real logo path
 
@@ -54,14 +55,14 @@ const cardContainerVariant: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.25,
-      delayChildren: 0.3,
+      staggerChildren: 0.35, // more visible stagger
+      delayChildren: 0.4,
     },
   },
 };
 const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: 100 }, // larger offset
+  visible: { opacity: 1, y: 0, transition: { duration: 1.1, ease: 'easeOut' } }, // slower fade
 };
 
 export default function LandingPage() {
@@ -81,7 +82,8 @@ export default function LandingPage() {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between bg-luxury-gradient overflow-x-hidden font-body">
+    <div className="relative min-h-screen flex flex-col justify-between bg-luxury-gradient overflow-x-hidden font-body pt-20">
+      <Header />
       {/* Animated Sparkles */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {sparkles.map((sparkle, i) => (
@@ -170,22 +172,45 @@ export default function LandingPage() {
       </header>
 
       {/* Overview/Details Cards */}
-      <section className="flex flex-col items-center gap-12 py-12 z-10">
-        <motion.section variants={cardContainerVariant} initial="hidden" animate="visible">
+      <section className="relative flex flex-col items-center py-16 z-10 w-full min-h-[60vh]">
+        {/* Luxury background gradient and vignette */}
+        <div className="absolute inset-0 pointer-events-none -z-10">
+          <div className="absolute inset-0 bg-luxury-gradient opacity-80" />
+          {/* Vignette overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
+          {/* Subtle SVG pattern overlay */}
+          <svg className="absolute inset-0 w-full h-full opacity-10" style={{mixBlendMode:'overlay'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 400 400">
+            <defs>
+              <pattern id="luxuryPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="16" stroke="#BFA76A" strokeWidth="1.5" fill="none" />
+              </pattern>
+            </defs>
+            <rect width="400" height="400" fill="url(#luxuryPattern)" />
+          </svg>
+        </div>
+        <motion.section
+          variants={cardContainerVariant}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col items-center w-full space-y-8"
+        >
           {overviewCards.map((card, idx) => {
             return (
               <motion.div
                 key={card.title}
                 variants={cardVariant}
-                whileHover={{ scale: 1.04, boxShadow: '0 8px 32px 0 rgba(191,167,106,0.25)' }}
-                className="w-full max-w-2xl bg-white/70 backdrop-blur-xl rounded-2xl shadow-gold border-2 border-luxury-gold/60 p-10 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:border-luxury-gold/90 group"
+                whileHover={{ scale: 1.06, boxShadow: '0 12px 36px 0 rgba(191,167,106,0.30)' }}
+                className="w-full max-w-2xl bg-white/40 backdrop-blur-2xl rounded-3xl shadow-gold border-2 border-luxury-gold/80 p-12 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:border-luxury-gold group relative"
+                style={{ boxShadow: '0 8px 32px 0 rgba(191,167,106,0.18), 0 2px 8px 0 rgba(1,68,33,0.10)' }}
               >
-                {React.createElement(card.icon, { className: "text-luxury-gold text-3xl mb-2" })}
-                <h2 className="text-3xl md:text-4xl font-display font-semibold text-luxury-dark-green mb-2 relative">
-                  {card.title}
-                  <span className="block w-10 h-1 bg-luxury-gold rounded-full mt-2 mx-auto group-hover:w-16 transition-all duration-300" />
-                </h2>
-                <p className="text-lg md:text-xl text-luxury-charcoal text-center font-body">{card.content}</p>
+                <div className="flex flex-col items-center mb-4">
+                  {React.createElement(card.icon, { className: "text-luxury-gold text-5xl mb-3 drop-shadow-lg" })}
+                  <h2 className="text-4xl md:text-5xl font-display font-bold text-luxury-dark-green mb-1 tracking-tight text-center relative">
+                    {card.title}
+                    <span className="block w-16 h-1 bg-luxury-gold rounded-full mt-3 mx-auto group-hover:w-24 transition-all duration-300" />
+                  </h2>
+                </div>
+                <p className="text-xl md:text-2xl text-luxury-charcoal text-center font-body font-medium drop-shadow-sm">{card.content}</p>
               </motion.div>
             );
           })}

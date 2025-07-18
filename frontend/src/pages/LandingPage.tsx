@@ -4,6 +4,13 @@ import { motion, Variants } from 'framer-motion';
 import { FaCrown, FaHandshake, FaFeatherAlt, FaEnvelope, FaPhone, FaMapMarkerAlt, FaInstagram, FaTwitter, FaLinkedin } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import Header from '../components/Header';
+import { useState, useRef } from 'react';
+// Remove Swiper imports
+// import { Swiper, SwiperSlide } from 'swiper/react';
+// import SwiperCore, { EffectCoverflow } from 'swiper';
+// import 'swiper/css';
+// import 'swiper/css/effect-coverflow';
+// SwiperCore.use([EffectCoverflow]);
 // Use Vite's import.meta.url to get the logo path
 const logo = new URL('/src/assets/logo.svg', import.meta.url).href; // <-- Replace with your real logo path
 
@@ -69,8 +76,95 @@ const cardVariant: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 1.1, ease: 'easeOut' } }, // slower fade
 };
 
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Float } from '@react-three/drei';
+import { useFrame, MeshProps } from '@react-three/fiber';
+import * as THREE from 'three';
+
+// Simple gold coin geometry
+function GoldCoin() {
+  const ref = React.useRef<THREE.Mesh>(null);
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.rotation.y += 0.03;
+    }
+  });
+  return (
+    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+      {/* Main coin body */}
+      <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.2, 1.2, 0.22, 64]} />
+        <meshPhysicalMaterial color="#FFD700" metalness={1} roughness={0.08} clearcoat={1} clearcoatRoughness={0.1} reflectivity={1} />
+      </mesh>
+      {/* Rim */}
+      <mesh rotation={[Math.PI / 2, 0, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.22, 1.2, 0.26, 64, 1, true]} />
+        <meshPhysicalMaterial color="#bfa76a" metalness={1} roughness={0.18} clearcoat={0.7} />
+      </mesh>
+    </Float>
+  );
+}
+
+// Floating gold particles
+function GoldParticles() {
+  const count = 40;
+  const positions = React.useMemo<[
+    number,
+    number,
+    number
+  ][]>(() =>
+    Array.from({ length: count }, () => [
+      (Math.random() - 0.5) * 16,
+      Math.random() * 8 - 2,
+      (Math.random() - 0.5) * 16
+    ] as [number, number, number]),
+    []
+  );
+  return (
+    <group>
+      {positions.map((pos, i) => (
+        <Float key={i} speed={1.5 + Math.random()} floatIntensity={2} rotationIntensity={0.5}>
+          <mesh position={pos}>
+            <sphereGeometry args={[0.12 + Math.random() * 0.08, 16, 16]} />
+            <meshStandardMaterial color="#FFD700" emissive="#fff8dc" emissiveIntensity={0.3} metalness={1} roughness={0.15} />
+          </mesh>
+        </Float>
+      ))}
+    </group>
+  );
+}
+
 export default function LandingPage() {
   const navigate = useNavigate();
+  const [current, setCurrent] = useState(0);
+  const total = overviewCards.length;
+  const containerRef = useRef(null);
+  const cardWidth = 520; // px, wider for Figma-style
+  const gap = 32; // px
+  const dragThreshold = 60; // px
+  const visibleCards = 1.2; // main + hint of next/prev
+
+  // Snap to nearest card on drag end
+  async function handleDragEnd(event, info) {
+    const offset = info.offset.x;
+    let newIdx = current;
+    if (offset < -dragThreshold && current < total - 1) newIdx = current + 1;
+    else if (offset > dragThreshold && current > 0) newIdx = current - 1;
+    setCurrent(newIdx);
+  }
+
+  // Click handler: only open detail if not dragging
+  let dragStarted = false;
+  function handlePointerDown() { dragStarted = false; }
+  function handlePointerMove() { dragStarted = true; }
+  function handleCardClick(idx, slug) {
+    if (!dragStarted && idx === current) navigate(`/topic/${slug}`);
+  }
+
+  // Snap to current card on index change
+  React.useEffect(() => {
+    // No longer needed as x and controls are removed
+  }, [current]);
 
   // Generate sparkle positions only once
   const sparkles = useMemo(() =>
@@ -86,7 +180,21 @@ export default function LandingPage() {
   );
 
   return (
-    <div className="relative min-h-screen flex flex-col justify-between bg-luxury-gradient overflow-x-hidden font-body pt-20">
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -40 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      className="relative min-h-screen flex flex-col justify-between bg-luxury-gradient overflow-x-hidden font-body pt-20"
+    >
+      {/* 3D Background Canvas */}
+      <div className="absolute inset-0 -z-20 pointer-events-none">
+        <Canvas camera={{ position: [0, 2, 10], fov: 50 }} shadows>
+          <ambientLight intensity={0.7} />
+          <directionalLight position={[5, 10, 5]} intensity={1.2} castShadow />
+          <GoldParticles />
+        </Canvas>
+      </div>
       <Header />
       {/* Animated Sparkles */}
       <div className="pointer-events-none absolute inset-0 z-0">
@@ -169,51 +277,35 @@ export default function LandingPage() {
         </motion.div>
       </header>
 
-      {/* Overview/Details Cards */}
+      {/* Feature/Overview Cards Section (restored) */}
       <section className="relative flex flex-col items-center py-16 z-10 w-full min-h-[60vh]">
-        {/* Luxury background gradient and vignette */}
-        <div className="absolute inset-0 pointer-events-none -z-10">
-          <div className="absolute inset-0 bg-luxury-gradient opacity-80" />
-          {/* Vignette overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
-          {/* Subtle SVG pattern overlay */}
-          <svg className="absolute inset-0 w-full h-full opacity-10" style={{mixBlendMode:'overlay'}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 400 400">
-            <defs>
-              <pattern id="luxuryPattern" width="40" height="40" patternUnits="userSpaceOnUse">
-                <circle cx="20" cy="20" r="16" stroke="#BFA76A" strokeWidth="1.5" fill="none" />
-              </pattern>
-            </defs>
-            <rect width="400" height="400" fill="url(#luxuryPattern)" />
-          </svg>
-        </div>
-        <motion.section
+        <motion.div
           variants={cardContainerVariant}
           initial="hidden"
           animate="visible"
-          className="flex flex-col items-center w-full space-y-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-6xl px-4"
         >
-          {overviewCards.map((card, idx) => {
-            return (
-              <motion.div
-                key={card.title}
-                variants={cardVariant}
-                whileHover={{ scale: 1.06, boxShadow: '0 12px 36px 0 rgba(191,167,106,0.30)' }}
-                className="w-full max-w-2xl bg-white/40 backdrop-blur-2xl rounded-3xl shadow-gold border-2 border-luxury-gold/80 p-12 flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:border-luxury-gold group relative cursor-pointer"
-                style={{ boxShadow: '0 8px 32px 0 rgba(191,167,106,0.18), 0 2px 8px 0 rgba(1,68,33,0.10)' }}
-                onClick={() => navigate(`/topic/${card.slug}`)}
-              >
-                <div className="flex flex-col items-center mb-4">
-                  {React.createElement(card.icon, { className: "text-luxury-gold text-5xl mb-3 drop-shadow-lg" })}
-                  <h2 className="text-4xl md:text-5xl font-display font-bold text-luxury-dark-green mb-1 tracking-tight text-center relative">
-                    {card.title}
-                    <span className="block w-16 h-1 bg-luxury-gold rounded-full mt-3 mx-auto group-hover:w-24 transition-all duration-300" />
-                  </h2>
-                </div>
-                <p className="text-xl md:text-2xl text-luxury-charcoal text-center font-body font-medium drop-shadow-sm">{card.content}</p>
-              </motion.div>
-            );
-          })}
-        </motion.section>
+          {overviewCards.map((card, idx) => (
+            <motion.div
+              key={card.title}
+              variants={cardVariant}
+              className="bg-white/60 backdrop-blur-2xl rounded-3xl shadow-gold border-2 border-luxury-gold/80 p-8 md:p-12 flex flex-col items-center group select-none transition-all duration-500 hover:scale-105 cursor-pointer"
+              style={{ minHeight: 320, maxWidth: '95vw', overflow: 'hidden', wordBreak: 'break-word' }}
+              onClick={() => navigate(`/topic/${card.slug}`)}
+            >
+              <div className="flex flex-col items-center mb-4">
+                {React.createElement(card.icon, { className: "text-luxury-gold text-5xl mb-3 drop-shadow-lg" })}
+                <h2 className="text-4xl md:text-5xl font-display font-bold text-luxury-dark-green mb-1 tracking-tight text-center relative break-words">
+                  {card.title}
+                  <span className="block w-16 h-1 bg-luxury-gold rounded-full mt-3 mx-auto group-hover:w-24 transition-all duration-300" />
+                </h2>
+              </div>
+              <p className="text-xl md:text-2xl text-luxury-charcoal text-center font-body font-medium drop-shadow-sm break-words whitespace-pre-line overflow-hidden">
+                {card.content}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
       </section>
 
       {/* Call to Action Section */}
@@ -277,6 +369,6 @@ export default function LandingPage() {
           100% { background-position: -200% 0; }
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 } 

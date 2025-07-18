@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const topicDetails: Record<string, { title: string; description: string }> = {
   'what-is-swapurskill': {
@@ -117,14 +118,12 @@ export default function TopicDetail() {
   const topic = slug && topicDetails[slug];
 
   return (
-    <div
-      className="min-h-screen w-full flex flex-col items-center justify-start font-body relative overflow-hidden"
-      style={{
-        background: 'url(/src/assets/vintage-map-bg.jpg) center center / cover no-repeat',
-        border: '8px solid #bfa76a',
-        boxShadow: '0 8px 32px 0 #bfa76a33, 0 2px 8px 0 #01442122',
-        position: 'relative',
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -40 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+      className="min-h-screen flex flex-col justify-between bg-luxury-gradient font-body"
     >
       {/* Gold effects and blur overlay */}
       <GoldEffects />
@@ -136,7 +135,7 @@ export default function TopicDetail() {
       <div className="relative z-20 w-full flex flex-col items-center">
         <RoyalSeal />
         <main className="flex flex-col items-center w-full max-w-3xl px-6 mt-2">
-          <h1 className="text-5xl md:text-6xl font-display font-bold text-luxury-dark-green mb-8 drop-shadow-lg text-center tracking-wider" style={{letterSpacing: '0.04em'}}>
+          <h1 className="text-5xl md:text-6xl font-display font-bold text-luxury-gold mb-8 drop-shadow-lg text-center tracking-wider" style={{letterSpacing: '0.04em'}}>
             {topic ? topic.title : 'Topic Not Found'}
           </h1>
           <p className="text-2xl text-luxury-charcoal text-center mb-16 font-body italic max-w-2xl" style={{lineHeight: '2.2rem'}}>
@@ -153,6 +152,6 @@ export default function TopicDetail() {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 } 
